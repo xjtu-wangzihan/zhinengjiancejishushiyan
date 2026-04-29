@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<DRVI4.1>
+	<FontIC  >
+		<ICName value="1283181769"> </ICName>
+		<X0 value="61"> </X0>
+		<Y0 value="18"> </Y0>
+		<Width value="475"> </Width>
+		<High value="29"> </High>
+		<Caption value="产生信号并绘制信号波形曲线"> </Caption>
+		<FGColor value="0"> </FGColor>
+		<ShadowColor value="16777215"> </ShadowColor>
+		<BGColor value="16777215"> </BGColor>
+		<FontWidthHigh value="0.700000"> </FontWidthHigh>
+		<Direction value="0"> </Direction>
+		<FontProperty value="0"> </FontProperty>
+		<ShadowEffect value="1"> </ShadowEffect>
+		<BusDataLine value="-1"> </BusDataLine>
+	</FontIC>
+	<ButtonIC  >
+		<ICName value="1283181805"> </ICName>
+		<X0 value="27"> </X0>
+		<Y0 value="66"> </Y0>
+		<Width value="100"> </Width>
+		<High value="30"> </High>
+		<Caption value="运行"> </Caption>
+		<BGColor value="0"> </BGColor>
+		<FGColor value="12632256"> </FGColor>
+		<DrivenIC value=""> </DrivenIC>
+		<BusDataLine value="1"> </BusDataLine>
+		<Font value="11,1,0,1"> </Font>
+	</ButtonIC>
+	<Script  >
+		<ICName value="1283181851"> </ICName>
+		<Position value="146,66,174,242,32,32,1,1"> </Position>
+		<Parameter1 value="4,5,-1,-1,-1,-1,-1,-1"> </Parameter1>
+		<script>
+<![CDATA[Rem Write Drawing Codes Here  
+Dim wave(160) 
+pi=3.141 
+amp=GWVI.ReadPort(2) 
+'amp=200 
+b=GWVI.ReadPort(3) 
+imax=150 
+dt=0.015/imax 
+For i=0 To imax 
+  t=2*pi*100*i*dt 
+  wave(i)=amp*Sin(t)       
+Next 
+GWVI.DrawLine 40,220,1000,220,0 
+GWVI.DrawLine 40,120,40,320,0 
+GWVI.WriteText 44,120,0," 1000" 
+GWVI.WriteText 44,310,0,"-1000" 
+GWVI.WriteText 30,213,0,"0" 
+GWVI.WriteText 320,228,0,"0.03" 
+GWVI.WriteText 320*2,228,0,"0.06" 
+'GWVI.WriteText 44,200,0," Cstr(amp)" 
+f=100/1000 
+ixishu=100*b 
+For i=0 To imax 
+  x1=40+i*ixishu 
+  y1=220-wave(i)*f 
+  x2=40+(i+1)*ixishu 
+  y2=220-wave(i+1)*f 
+  GWVI.DrawLine x1,y1,x2,y2,12 
+Next 
+ 
+ 
+ 
+ 
+ 
+
+
+
+
+]]></script>
+	</Script>
+	<ZLineIC  >
+		<ICName value="1283181861"> </ICName>
+		<Parameters value="1,1283181805,1,1283181851,1,1337293"> </Parameters>
+	</ZLineIC>
+	<EDITIC  >
+		<ICName value="1772627622"> </ICName>
+		<X0 value="443"> </X0>
+		<Y0 value="65"> </Y0>
+		<Width value="100"> </Width>
+		<High value="22"> </High>
+		<BusDataLine value="4"> </BusDataLine>
+		<ShowValue value="400"> </ShowValue>
+		<Font value="11,0,0"> </Font>
+	</EDITIC>
+	<EDITIC  >
+		<ICName value="1772627632"> </ICName>
+		<X0 value="447"> </X0>
+		<Y0 value="107"> </Y0>
+		<Width value="100"> </Width>
+		<High value="22"> </High>
+		<BusDataLine value="5"> </BusDataLine>
+		<ShowValue value="0.05"> </ShowValue>
+		<Font value="11,0,0"> </Font>
+	</EDITIC>
+	<LabelIC  >
+		<ICName value="1772627768"> </ICName>
+		<X0 value="353"> </X0>
+		<Y0 value="63"> </Y0>
+		<Width value="60"> </Width>
+		<High value="18"> </High>
+		<Caption value="幅值"> </Caption>
+		<BGColor value="15790320"> </BGColor>
+		<FGColor value="0"> </FGColor>
+		<BusDataLine value="-1"> </BusDataLine>
+		<Font value="11,1,0,0"> </Font>
+		<Direction value="0"> </Direction>
+	</LabelIC>
+	<LabelIC  >
+		<ICName value="1772627776"> </ICName>
+		<X0 value="351"> </X0>
+		<Y0 value="107"> </Y0>
+		<Width value="60"> </Width>
+		<High value="18"> </High>
+		<Caption value="周期"> </Caption>
+		<BGColor value="15790320"> </BGColor>
+		<FGColor value="0"> </FGColor>
+		<BusDataLine value="-1"> </BusDataLine>
+		<Font value="11,1,0,0"> </Font>
+		<Direction value="0"> </Direction>
+	</LabelIC>
+	<ZLineIC  >
+		<ICName value="1772628949"> </ICName>
+		<Parameters value="4,1772627622,1,1283181851,2,1337293"> </Parameters>
+	</ZLineIC>
+	<ZLineIC  >
+		<ICName value="1772628953"> </ICName>
+		<Parameters value="5,1772627632,1,1283181851,3,1337293"> </Parameters>
+	</ZLineIC>
+	<ZLineIC  >
+		<ICName value="1772631037"> </ICName>
+		<Parameters value="1,1283181805,1,1283181851,1,1337293"> </Parameters>
+	</ZLineIC>
+</DRVI4.1>

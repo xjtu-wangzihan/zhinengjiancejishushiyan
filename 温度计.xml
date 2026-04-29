@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<DRVI4.1>
+	<Script  >
+		<ICName value="1772628085"> </ICName>
+		<Position value="435,190,435,190,32,32,1,0"> </Position>
+		<Parameter1 value="2,-1,-1,-1,-1,-1,-1,-1"> </Parameter1>
+		<script>
+<![CDATA[Sub temperature(x,y,maxval,minval) 
+imax = 10 
+v = GWVI.ReadPort(2) 
+For i = 0 To imax 
+GWVI.DrawLine x + 30, y + i * 15, x + 35, y + i * 15, 0 
+Next 
+GWVI.WriteText x, y - 5, 0, CStr(maxval) 
+GWVI.WriteText x, y + 145, 0, CStr(minval) 
+GWVI.FillRectangle x + 45, y, 26, 150, 1 
+GWVI.FillCircle x + 45 + 12, y + 150 + 13, 16, 12 
+h = v * 150 / (maxval - minval) 
+GWVI.FillRectangle x + 45, y + 150 - h, 26, h, 12 
+End Sub 
+ 
+Sub drawit() 
+temperature 150, 40, 80, 0 
+End Sub 
+ 
+drawit
+
+]]></script>
+	</Script>
+	<OnOffButtonIC  >
+		<ICName value="1772628516"> </ICName>
+		<X0 value="325"> </X0>
+		<Y0 value="215"> </Y0>
+		<Width value="100"> </Width>
+		<High value="30"> </High>
+		<Caption value="On/Off"> </Caption>
+		<BGColor value="4"> </BGColor>
+		<FGColor value="14"> </FGColor>
+		<Value value="1"> </Value>
+		<BusDataLine value="1"> </BusDataLine>
+		<Font value="11,1,0,1"> </Font>
+	</OnOffButtonIC>
+	<ZLineIC  >
+		<ICName value="1772628529"> </ICName>
+		<Parameters value="1,1772628516,1,1772628085,1,1337293"> </Parameters>
+	</ZLineIC>
+	<EDITIC  >
+		<ICName value="1772631296"> </ICName>
+		<X0 value="367"> </X0>
+		<Y0 value="86"> </Y0>
+		<Width value="100"> </Width>
+		<High value="22"> </High>
+		<BusDataLine value="2"> </BusDataLine>
+		<ShowValue value="40"> </ShowValue>
+		<Font value="11,0,0"> </Font>
+	</EDITIC>
+	<ZLineIC  >
+		<ICName value="1772631638"> </ICName>
+		<Parameters value="2,1772631296,1,1772628085,2,1337293"> </Parameters>
+	</ZLineIC>
+	<LabelIC  >
+		<ICName value="1772631698"> </ICName>
+		<X0 value="299"> </X0>
+		<Y0 value="86"> </Y0>
+		<Width value="60"> </Width>
+		<High value="18"> </High>
+		<Caption value="温度"> </Caption>
+		<BGColor value="15790320"> </BGColor>
+		<FGColor value="0"> </FGColor>
+		<BusDataLine value="-1"> </BusDataLine>
+		<Font value="11,1,0,0"> </Font>
+		<Direction value="0"> </Direction>
+	</LabelIC>
+</DRVI4.1>

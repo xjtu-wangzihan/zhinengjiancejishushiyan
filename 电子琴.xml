@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<DRVI4.1>
+	<WaveIC  >
+		<ICName value="1282634488"> </ICName>
+		<X0 value="22"> </X0>
+		<Y0 value="32"> </Y0>
+		<LengthOfShow value="645"> </LengthOfShow>
+		<High value="180"> </High>
+		<BgColor value="12615680"> </BgColor>
+		<FGColor value="16777215"> </FGColor>
+		<CurveColor value="8454143"> </CurveColor>
+		<Maximum value="10000.000000"> </Maximum>
+		<Minimum value="-10000.000000"> </Minimum>
+		<Left value="50"> </Left>
+		<Type value="0"> </Type>
+		<YArrayLine value="9"> </YArrayLine>
+		<XArrayLine value="0"> </XArrayLine>
+	</WaveIC>
+	<WaveIC  >
+		<ICName value="1282634494"> </ICName>
+		<X0 value="22"> </X0>
+		<Y0 value="220"> </Y0>
+		<LengthOfShow value="645"> </LengthOfShow>
+		<High value="180"> </High>
+		<BgColor value="12615680"> </BgColor>
+		<FGColor value="16777215"> </FGColor>
+		<CurveColor value="8454143"> </CurveColor>
+		<Maximum value="10000.000000"> </Maximum>
+		<Minimum value="0.000000"> </Minimum>
+		<Left value="50"> </Left>
+		<Type value="0"> </Type>
+		<YArrayLine value="10"> </YArrayLine>
+		<XArrayLine value="0"> </XArrayLine>
+	</WaveIC>
+	<EdgeIC  >
+		<ICName value="1282634839"> </ICName>
+		<X0 value="9"> </X0>
+		<Y0 value="18"> </Y0>
+		<Width value="667"> </Width>
+		<High value="542"> </High>
+		<LightColor value="16777215"> </LightColor>
+		<DarkColor value="0"> </DarkColor>
+		<LineWidth value="1"> </LineWidth>
+		<WidthOfEdge value="4"> </WidthOfEdge>
+		<Type value="3"> </Type>
+	</EdgeIC>
+	<RAMIC  >
+		<ICName value="1282635063"> </ICName>
+		<X0 value="575"> </X0>
+		<Y0 value="511"> </Y0>
+		<Line1 value="11"> </Line1>
+		<Line2 value="-1"> </Line2>
+	</RAMIC>
+	<LEDIC  >
+		<ICName value="1282636579"> </ICName>
+		<X0 value="22"> </X0>
+		<Y0 value="495"> </Y0>
+		<Width value="140"> </Width>
+		<High value="53"> </High>
+		<FGColor value="8454143"> </FGColor>
+		<BGColor value="8388608"> </BGColor>
+		<LengthOfLed value="5"> </LengthOfLed>
+		<Align value="1"> </Align>
+		<Value value="294.000000"> </Value>
+		<BusDataLine value="8"> </BusDataLine>
+	</LEDIC>
+	<Script  >
+		<ICName value="1282636670"> </ICName>
+		<Position value="463,469,385,526,32,32,-1,0"> </Position>
+		<Parameter1 value="1,8,9,-1,-1,-1,-1,-1"> </Parameter1>
+		<script>
+<![CDATA[Rem Write VBScript Codes Here
+a=GWVI.ReadPort(1)
+f=0
+If a=0 Then
+f=131
+End If
+If a=1 Then
+f=147
+End If
+If a=2 Then
+f=165
+End If
+If a=3 Then
+f=175
+End If
+If a=4 Then
+f=196
+End If
+If a=5 Then
+f=220
+End If
+If a=6 Then
+f=247
+End If
+If a=7 Then
+f=262
+End If
+If a=8 Then
+f=294
+End If
+If a=9 Then
+f=330
+End If
+If a=10 Then
+f=349
+End If
+If a=11 Then
+f=392
+End If
+If a=12 Then
+f=440
+End If
+If a=13 Then
+f=494
+End If
+If a=14 Then
+f=523
+End If 
+f1=GWVI.ReadPort(2) 
+If f1>50 Then 
+f=523 
+Else If f1>30 Then 
+f=294 
+Else f=0 
+End If 
+End If
+GWVI.WritePort 3,f
+Dim x(44000)
+L=22000
+Fs=44000
+dt=1.0/Fs
+A=8000
+Pi=3.1415926
+v=2*pi*dt*f
+For K = 0 To L
+x(k)=A*Sin(v*K)
+Next
+GWVI.WritePortArray1 4,22000,dt,0,x
+
+
+
+]]></script>
+	</Script>
+	<ZLineIC  >
+		<ICName value="1282636785"> </ICName>
+		<Parameters value="8,1282636670,3,1282636579,1,1337293"> </Parameters>
+	</ZLineIC>
+	<ZLineIC  >
+		<ICName value="1282636788"> </ICName>
+		<Parameters value="9,1282636670,4,1282634488,1,1337293"> </Parameters>
+	</ZLineIC>
+	<Fourier  >
+		<ICName value="1282636844"> </ICName>
+		<Position value="530,511,407,530,32,32,1"> </Position>
+		<Parameter1 value="16384,9,10,11,1,16,-1,-1"> </Parameter1>
+		<Parameter2 value="100.000000,4.000000"> </Parameter2>
+	</Fourier>
+	<ZLineIC  >
+		<ICName value="1282636868"> </ICName>
+		<Parameters value="9,1282634488,1,1282636844,1,1337293"> </Parameters>
+	</ZLineIC>
+	<ZLineIC  >
+		<ICName value="1282636871"> </ICName>
+		<Parameters value="10,1282636844,2,1282634494,1,1337293"> </Parameters>
+	</ZLineIC>
+	<ZLineIC  >
+		<ICName value="1282636877"> </ICName>
+		<Parameters value="11,1282636844,3,1282635063,1,1337293"> </Parameters>
+	</ZLineIC>
+	<SoundPlay  >
+		<ICName value="1282636960"> </ICName>
+		<Position value="622,511,541,517,32,32"> </Position>
+		<Parameter1 value="1,22000,9,-1,0"> </Parameter1>
+	</SoundPlay>
+	<ZLineIC  >
+		<ICName value="1282637008"> </ICName>
+		<Parameters value="9,1282634488,1,1282636960,1,1337293"> </Parameters>
+	</ZLineIC>
+	<EDITIC  >
+		<ICName value="1773219292"> </ICName>
+		<X0 value="164"> </X0>
+		<Y0 value="426"> </Y0>
+		<Width value="100"> </Width>
+		<High value="22"> </High>
+		<BusDataLine value="1"> </BusDataLine>
+		<ShowValue value="44"> </ShowValue>
+		<Font value="11,0,0"> </Font>
+	</EDITIC>
+	<LabelIC  >
+		<ICName value="1773221226"> </ICName>
+		<X0 value="119"> </X0>
+		<Y0 value="427"> </Y0>
+		<Width value="60"> </Width>
+		<High value="18"> </High>
+		<Caption value="温度"> </Caption>
+		<BGColor value="15790320"> </BGColor>
+		<FGColor value="0"> </FGColor>
+		<BusDataLine value="-1"> </BusDataLine>
+		<Font value="11,1,0,0"> </Font>
+		<Direction value="0"> </Direction>
+	</LabelIC>
+	<ZLineIC  >
+		<ICName value="1773236910"> </ICName>
+		<Parameters value="1,1773219292,1,1282636670,2,1337293"> </Parameters>
+	</ZLineIC>
+</DRVI4.1>

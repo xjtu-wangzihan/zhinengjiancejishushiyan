@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<DRVI4.1>
+	<EDITIC  >
+		<ICName value="1773142588"> </ICName>
+		<X0 value="380"> </X0>
+		<Y0 value="135"> </Y0>
+		<Width value="100"> </Width>
+		<High value="22"> </High>
+		<BusDataLine value="5"> </BusDataLine>
+		<ShowValue value="20"> </ShowValue>
+		<Font value="11,0,0"> </Font>
+	</EDITIC>
+	<LabelIC  >
+		<ICName value="1773142887"> </ICName>
+		<X0 value="330"> </X0>
+		<Y0 value="137"> </Y0>
+		<Width value="60"> </Width>
+		<High value="18"> </High>
+		<Caption value="刻度"> </Caption>
+		<BGColor value="15790320"> </BGColor>
+		<FGColor value="0"> </FGColor>
+		<BusDataLine value="-1"> </BusDataLine>
+		<Font value="11,1,0,0"> </Font>
+		<Direction value="0"> </Direction>
+	</LabelIC>
+	<OnOffButtonIC  >
+		<ICName value="1773146266"> </ICName>
+		<X0 value="365"> </X0>
+		<Y0 value="205"> </Y0>
+		<Width value="100"> </Width>
+		<High value="30"> </High>
+		<Caption value="On/Off"> </Caption>
+		<BGColor value="128"> </BGColor>
+		<FGColor value="8454143"> </FGColor>
+		<Value value="0"> </Value>
+		<BusDataLine value="6"> </BusDataLine>
+		<Font value="11,1,0,1"> </Font>
+	</OnOffButtonIC>
+	<Script  >
+		<ICName value="1773146524"> </ICName>
+		<Position value="397,163,561,189,32,32,6,1"> </Position>
+		<Parameter1 value="5,-1,-1,-1,-1,-1,-1,-1"> </Parameter1>
+		<script>
+<![CDATA[Rem Write Drawing Codes Here  
+' 半圆表盘示例 
+' semicircle(cx, cy, radius, minval, maxval, val) 
+' cx,cy: 表盘圆心坐标 
+' radius: 表盘半径（像素） 
+' minval,maxval: 刻度范围（例如 0,50） 
+' val: 当前数值（表盘指针会指向对应刻度；若超出范围会被截断） 
+ 
+Sub semicircle(cx, cy, radius, minval, maxval, val) 
+  ' 限定 val 在 [minval,maxval] 
+  If val < minval Then val = minval 
+  If val > maxval Then val = maxval 
+ 
+  pi = 3.14159265358979 
+ 
+  '表盘从180°(最左) 到 0°(最右)的半圆 
+  startAngle = 0 
+  endAngle = 180 
+  sweep = endAngle - startAngle 
+ 
+  ' 清除区域（可选：在你的界面上按需调整背景色/矩形） 
+  'GWVI.FillRectangle cx-radius-10,cy-radius-10,radius*2+20,radius+30,15 
+ 
+  ' 画半圆外圈 
+  GWVI.DrawArc cx, cy, radius, startAngle, endAngle, 0 
+ 
+  ' 刻度参数 
+  majorStep = 10   ' 大刻度间隔（单位） 
+  minorStep = 1    ' 小刻度间隔（单位） 
+  totalRange = maxval - minval 
+  degPerUnit = 180 / totalRange   '每单位对应度数（180°对应整个范围） 
+ 
+  ' 画刻度（从 minval 到 maxval） 
+  For v = minval To maxval Step minorStep 
+    deg = startAngle + (v - minval) * sweep / totalRange 
+    rad = deg * pi / 180 
+ 
+    ' 外侧刻线起点 / 终点长度 
+    outerR = radius 
+    innerR = radius - 8   ' 小刻度长度 8 px 
+    If (v Mod majorStep) = 0 Then 
+      innerR = radius - 15 ' 大刻度更长 
+    End If 
+ 
+    x1 = cx + outerR * Cos(rad) 
+    y1 = cy - outerR * Sin(rad) 
+    x2 = cx + innerR * Cos(rad) 
+    y2 = cy - innerR * Sin(rad) 
+ 
+    GWVI.DrawLine x1, y1, x2, y2, 0 
+ 
+    ' 在大刻度处写数字 
+    If (v Mod majorStep) = 0 Then 
+      labelR = radius - 28 
+      lx = cx + labelR * Cos(rad) 
+      ly = cy - labelR * Sin(rad) 
+      ' 轻微偏移以使数字可读（根据角度调整文字位置） 
+      If deg > 90 Then 
+        ' 左半部向左偏 
+        GWVI.WriteText lx - 12, ly - 6, 0, CStr(v) 
+      ElseIf deg < 90 And deg > 0 Then 
+        ' 右上部稍右 
+        GWVI.WriteText lx + 4, ly - 6, 0, CStr(v) 
+      ElseIf deg = 90 Then 
+        GWVI.WriteText lx - 8, ly - 10, 0, CStr(v) 
+      Else 
+        GWVI.WriteText lx - 6, ly + 4, 0, CStr(v) 
+      End If 
+    End If 
+  Next 
+ 
+  ' 计算指针角度（线性映射） 
+  degPointer = startAngle + (val - minval) * sweep / totalRange 
+  radP = degPointer * pi / 180 
+ 
+  ' 指针长度（略短于半径） 
+  pointerLen = radius - 30 
+  px = cx + pointerLen * Cos(radP) 
+  py = cy - pointerLen * Sin(radP) 
+ 
+  ' 画指针（红色） 
+  GWVI.DrawLine cx, cy, px, py, 4 
+  ' 指针中间圆点（掩盖起点） 
+  GWVI.FillCircle cx, cy, 6, 4 
+ 
+  ' 显示当前数值文字（可根据需要放到表盘下方） 
+  'GWVI.WriteText cx - 20, cy + radius + 10, 0, "Val: " & CStr(val) 
+End Sub 
+ 
+' 示例调用：固定值或从端口读值 
+Sub drawit() 
+  v = GWVI.ReadPort(2) 
+  semicircle 200, 220, 120, 0, 50, v 
+End Sub 
+ 
+drawit
+
+]]></script>
+	</Script>
+	<ZLineIC  >
+		<ICName value="1773146676"> </ICName>
+		<Parameters value="5,1773142588,1,1773146524,2,1337293"> </Parameters>
+	</ZLineIC>
+	<ZLineIC  >
+		<ICName value="1773146679"> </ICName>
+		<Parameters value="6,1773146266,1,1773146524,1,1337293"> </Parameters>
+	</ZLineIC>
+</DRVI4.1>
